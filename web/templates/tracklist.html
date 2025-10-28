@@ -1,0 +1,71 @@
+{% include 'snippets/track_css.html' %}
+{% include 'snippets/track_svg.html' %}
+
+<div class="fixed inset-0 bg-transparent z-50 pointer-events-auto hidden" id="block-interactions"></div>
+
+
+
+
+
+<div class="w-full text-left mt-4">
+  <div>
+    <div id="playlist">
+      {% if tracks|length != 0 %}
+      {% set max_track = [8, tracks|length] | min %}
+      {% set insert_index = range(4, max_track + 1) | random %}
+      {% for track in tracks %}
+      {% set loop_index = loop.index %}
+      {% include 'snippets/track.html' %}
+      {% if loop.index == insert_index and not current_user.is_authenticated%}
+      {% include 'snippets/about_inline.html' %}
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    {% set track = tracks[0] %}
+    <div id="track-control" class="fixed left-0 right-0 bottom-0 z-50 " data-target-track-id="track-{{track.id}}">
+      <div class="container mx-auto w-full  xl:w-3/4 bg-black rounded-t-xl">
+       
+        <div class="flex items-center lg:py-2 px-2">
+          <div class="p-2 w-3/12  md:w-2/12  flex flex-col items-center lg:justify-center relative ">
+            <img class="cover_art block rounded-xl p-1   lg:h-20 lg:w-20" src="{{ tpl_utils.apple_music_thumbnail(track.cover_art) }}" alt="">
+          </div>
+          <div class="w-7/12 md:w-9/12 p-2 pl-0 text-white text-xs overflow-hidden relative">
+            <div class="title font-bold line-clamp-1" id="scrollingText">{{track.title}}</div>
+            <div class="artist_name line-clamp-1 ">{{track.artist_name}}</div>
+          </div>
+          <div class="w-2/12 md:w-1/12  bg-grey-500  text-white">
+            <div id="action-pause" class="hidden cursor-pointer ">
+              <svg class=" fill-white pointer-events-none  aspect-square p-5 lg:p-8">
+                <use xlink:href="#icon-pause"></use>
+              </svg>
+            </div>
+            <div id="action-play" class="cursor-pointer ">
+              <svg class="fill-white pointer-events-none aspect-square p-5 lg:p-8 ">
+                <use xlink:href="#icon-play"></use>
+              </svg>
+            </div>
+          </div>
+
+        </div>
+        <div class="w-full h-1 -mt-1 relative">
+          <div id="track-progress" class="absolute top-0 left-0 h-full bg-[#9E7FFF]" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class=" text-gray-500 py-10">
+      <p>Nothing found.
+
+      </p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<audio id="previewPlayer" controls class="absolute  bottom-2 left-1/2 transform -translate-x-1/2 z-50 hidden">
+  Your browser does not support the audio element.
+</audio>
+{% if track is defined %}
+{% include 'snippets/popover_track.html' with context %}
+{% endif %}
+{% include 'js_tracklist.html' %}

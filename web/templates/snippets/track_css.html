@@ -1,0 +1,83 @@
+<style>
+  .track {
+    position: relative;
+  }
+
+
+  .track:hover .playVideoTrack,
+  .track:hover .playPreview ,
+  .track:hover .visible-hover-track ,
+  .video .track.playing .song-played-indicator,
+  .track.active .playVideoTrack,
+  .track.active .playPreview,
+  .preview .track.playing .preview-actions:hover .pausePreview,
+  .video .track.playing .video-actions:hover .pauseVideoTrack
+    {
+    visibility: visible;
+  }
+
+  .track.active .track-number,
+  .track:hover .track-number,
+  .song-played-indicator,
+  .playVideoTrack,
+  .pauseVideoTrack,
+  .playPreview,
+  .pausePreview,
+  .preview .track.playing .preview-actions:hover .playPreview,
+  .video .track.playing .playVideoTrack,
+  .track.playing .video-actions:hover .song-played-indicator,
+  .track .visible-hover-track
+   {
+    visibility: hidden;
+  }
+
+  .preview .track.active.playing .playPreview svg {
+    animation: spin 4s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+
+
+  track.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: inherit;
+    /* Inherit the track's background color */
+    z-index: -2;
+    /* Ensure it’s behind other content but above the progress bar */
+    border-radius: inherit;
+    /* Ensures the pseudo-element respects the border-radius of the parent */
+  }
+
+  .track.active::after,
+  .track.active .bg-preview {
+    transition: all 20ms;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5%;
+    width: var(--background-width, 0%);
+    /* Set this dynamically via JavaScript to change from 0% to 100% */
+    background-color: rgba(255, 255, 255, 0.197);
+    /* Example background color with some transparency */
+    z-index: 0;
+    /* Ensure it’s behind other content */
+    /* border-radius: inherit; Ensures the pseudo-element respects the border-radius of the parent */
+  }
+
+
+</style>
